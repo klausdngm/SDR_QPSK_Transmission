@@ -6,31 +6,24 @@ clc
 msg = booktxt();
 msg_length = length(msg);
 % Generate Barker Code for Preamble
-barker = comm.BarkerCode('SamplesPerFrame', 28, 'Length', 13);
-preamble = barker()+1;
-release(barker);
-% barker = [+1 +1 +1 +1 +1 +1 +1 +1 +1 +1 0 0 0 0 +1 +1 +1 +1 0 0 +1 +1 0 0 +1 +1];
-% barkerlength = length(barker);
-% headerlength = barkerlength*2;
+barker = [+1 +1 +1 +1 +1 +1 +1 +1 +1 +1 1 0 1 0 +1 +1 +1 +1 1 0 +1 +1 1 0 +1 +1];
+barker = barker.';
 
 % Convert message to bits
 bits = ASCII2bits(msg);
-tail = zeros(100,1);
+tail = zeros(10,1);
 lengthTail = length(tail);
-bits = [bits; tail];
-len = length(bits)/2;
+bits = [barker; bits; tail];
 
-hPSKModTrain = comm.PSKModulator(4, ...
-    'PhaseOffset', pi/4, ...
-    'SymbolMapping', 'Binary');
-xPreamble = hPSKModTrain(preamble);
 %% Modulation
 
 % Modulate data to QPSK
 M = 4; % Modulation order
 [txData, ref] = qpsk_modulator(bits);
-txData = [xPreamble; txData];
+%txData = [barker; txData];
 frameLength = length(txData);
+% get modulated Preamble for frame detection algorithm
+xPreamble = txData(1:13);
 %% Init Rx and Tx
 sampleRate = 1e6;
 symbolRate = 250e3;
