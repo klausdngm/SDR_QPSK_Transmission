@@ -1,6 +1,6 @@
 
 function [frame,ind] = FindFrameStart(signal, xPreamble, frameLength)
-
+% length in modulated symbols
 preambleLength = length(xPreamble);
 
 %% Filter Method
