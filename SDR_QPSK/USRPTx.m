@@ -38,7 +38,7 @@ sps = sampleRate/symbolRate;
 samplesPerFrame = length(txData)*2;
 hRadioTx                     = comm.SDRuTransmitter;
 hRadioTx.Platform            = 'N200/N210/USRP2';
-hRadioTx.IPAddress            = '192.168.10.8';
+hRadioTx.IPAddress            = 'put IP here';
 hRadioTx.ChannelMapping      = 1;
 
 
